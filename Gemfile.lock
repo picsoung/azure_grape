@@ -31,5 +31,6 @@ DEPENDENCIES
   3scale_client
   grape
   json
+  nokogiri
   rack
   thin
