@@ -17,6 +17,11 @@ ssh_options[:forward_agent] = true
 ssh_options[:port] = 22
 
 namespace :deploy do
+  desc "Fix permissions"
+  task :fix_permissions, :roles => [ :app, :db, :web ] do
+    run "chmod +x #{release_path}/config/config.sh"
+  end
+
   set :foreman_sudo, 'sudo'                    # Set to `rvmsudo` if you're using RVM
   set :foreman_upstart_path, '/home/#{user}/apps/#{application}' # Set to `/etc/init/` if you don't have a sites folder
   set :foreman_options, {
@@ -35,5 +40,6 @@ namespace :deploy do
   task :symlink_config, roles: :app do
     # Add database config here
   end
+  after "deploy:finalize_update", "deploy:fix_permissions"
   #after "deploy:finalize_update", "deploy:symlink_config"
 end
