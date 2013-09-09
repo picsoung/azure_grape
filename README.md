@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ## 3scale Example Sentiment API - V1.0: Basic API Method Calls and Authentication
 
 This is a very basic API that returns the sentiment value of a word or a sentence. You can define the sentiment value of any additional word that is not in the dictionary.
@@ -118,3 +119,7 @@ The above call returns
 
 
 
+=======
+azure_grape
+===========
+>>>>>>> 09810a914ead24a3b3a47c4d4b9b022bb6c2cd07
