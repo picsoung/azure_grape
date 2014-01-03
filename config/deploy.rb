@@ -4,7 +4,6 @@ require "bundler/capistrano"
 set :application, "grape"
 set :user, "azureuser"
 
-
 set :scm, :git
 set :repository, "git@github.com:picsoung/azure_grape.git"
 set :branch, "master"
