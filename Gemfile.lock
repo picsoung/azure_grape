@@ -3,6 +3,10 @@ GEM
   specs:
     3scale_client (2.2.10)
       nokogiri
+    capistrano (3.0.1)
+      i18n
+      rake (>= 10.0.0)
+      sshkit (>= 0.0.23)
     daemons (1.1.8)
     eventmachine (0.12.10)
     grape (0.2.0)
@@ -12,27 +16,46 @@ GEM
       rack
       rack-mount
     hashie (1.2.0)
+    i18n (0.6.9)
     json (1.7.3)
+    kgio (2.8.1)
     multi_json (1.3.6)
     multi_xml (0.5.1)
+    net-scp (1.1.2)
+      net-ssh (>= 2.6.5)
+    net-ssh (2.7.0)
     nokogiri (1.5.4)
     rack (1.4.1)
     rack-mount (0.8.3)
       rack (>= 1.0.0)
+    raindrops (0.12.0)
     rake (10.1.0)
+    sshkit (1.3.0)
+      net-scp (>= 1.1.2)
+      net-ssh
+      term-ansicolor
+    term-ansicolor (1.2.2)
+      tins (~> 0.8)
     thin (1.3.1)
       daemons (>= 1.0.9)
       eventmachine (>= 0.12.6)
       rack (>= 1.0.0)
+    tins (0.13.1)
+    unicorn (4.7.0)
+      kgio (~> 2.6)
+      rack
+      raindrops (~> 0.7)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
   3scale_client
+  capistrano
   grape
   json
   nokogiri
   rack
   rake
   thin
+  unicorn
