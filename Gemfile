@@ -2,7 +2,7 @@ source "https://rubygems.org"
 gem 'rack'
 gem 'json'
 gem 'grape'
-gem 'thin'
+gem 'thin', '~>1.5.0'
 gem '3scale_client'
 gem 'nokogiri'
 gem 'rake'
