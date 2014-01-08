@@ -13,53 +13,53 @@ As soon as your VM is ready you will be able to access it's dashboard. On the da
 The VM comes with really few packages installed.  We need to access it to install other components.
 Azure requires to create a X509 certificate with a 2048-bit RSA keypair to ssh into VMs.
 
-///bash
+```bash
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout myPrivateKey.key -out myCert.pem
-///
+```
 
 Once the key is create you ssh to your VM
 
-///
+```
 ssh -i myPrivateKey.key -p 22 username@servicename.cloudapp.net
-///
+```
 
 Once in it run the following commands to install all we need
-///
+```
 sudo apt-get -y update
 sudo apt-get -y upgrade
 sudo apt-get -y install ruby1.9.3 build-essential libsqlite3-dev nodejs git-core nginx
-///
+```
 You can check that ruby installation is complete by running
-///
+```
 ruby -v
-///
+```
 it should output something like ruby 1.9.3p194 (2012-04-20 revision 35410) [x86_64-linux].
 
 we also need to install bundler and thin server
-///sudo gem install bundler
+```sudo gem install bundler
 sudo gem install thin
-///
+```
 
 We should have we need for now on the VM. Go back to the VM's dashboard and click on the Endpoints tab. There, add the HTTP endpoint on port 80, the fields should auto-filled.
 
 To make sure it works, launch nginx
 
-///
+```
 
 sudo service nginx start
 
-///
+```
 and open in your browser the url corresponding to the DNS of your virtual machine (*.cloudapp.net).
 
 You should see the message "welcome to nginx!"
 
 If it works you can now stop nginx and delete the default website
 
-///
+```
 
 sudo service nginx stop
 sudo rm /etc/nginx/sites-enabled/default
-///
+```
 Configure your github repo
 
 In this tutorial we use github to host our code. If you have not a repo for your API, make sure to create one and host it on github.com. If you are not familiar with git and github you can check a great tutorial here (LINK TO BE FOUND).
@@ -74,16 +74,16 @@ To deploy the API we use Capistrano. Capistrano is an automation tool, that will
 
 To install Capistrano add this line to your Gemfile
 
-///
+```
 gem 'capistrano'
-///
+```
 
 Run the following command to install the new gems and setup Capistrano
 
-///
+```
 bundle
 capify .
-///
+```
 
 Copy and paste the content of nginx.conf into /config.
 
