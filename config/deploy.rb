@@ -36,6 +36,12 @@ namespace :deploy do
     deploy.stop
     deploy.start
   end
+
+  task :setup_config, roles: :app do
+    sudo "ln -nfs #{current_path}/config/nginx.conf /etc/nginx/sites-enabled/#{application}"
+    sudo "mkdir -p #{shared_path}/config"
+  end
+  after "deploy:setup", "deploy:setup_config"
  
   # This will make sure that Capistrano doesn't try to run rake:migrate (this is not a Rails project!)
   task :cold do
