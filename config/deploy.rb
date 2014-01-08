@@ -51,4 +51,10 @@ namespace :deploy do
   end
   after "deploy:finalize_update", "deploy:fix_permissions"
   after "deploy:finalize_update", "deploy:symlink_config"
+
+  desc "Override deploy:cold to NOT run migrations - there's no database"
+  task :cold do
+    update
+    start
+  end
 end
