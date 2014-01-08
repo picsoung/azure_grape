@@ -5,7 +5,7 @@ require '3scale/client'
 
 class SentimentApiV2 < Grape::API
   version 'v2', :using => :path, :vendor => '3scale'
-  error_format :json
+  #error_format :json
   
   $client = ThreeScale::Client.new(:provider_key => "da3be4aba4fbcc8267dac7202ee01442")
   

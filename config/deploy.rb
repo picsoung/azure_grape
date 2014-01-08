@@ -24,37 +24,22 @@ ssh_options[:keys] = ["/Users/picsoung/Documents/Dev/3scale/add-on/azure/myPriva
 
 
 namespace :deploy do
-  desc "Fix permissions"
-  task :fix_permissions, :roles => [ :app, :db, :web ] do
-    run "chmod +x #{release_path}/config/unicorn_init.sh"
+  task :start, :roles => [:web, :app] do
+    run "cd #{deploy_to}/current && nohup thin -C config/production_config.yml -R config.ru start"
   end
-
-
-  %w[start stop restart].each do |command|
-    desc "#{command} unicorn server"
-    task command, roles: :app, except: {no_release: true} do
-      run "service unicorn_#{application} #{command}"
-    end
+ 
+  task :stop, :roles => [:web, :app] do
+    run "cd #{deploy_to}/current && nohup thin -C config/production_config.yml -R config.ru stop"
   end
-
-
-  task :setup_config, roles: :app do
-    sudo "ln -nfs #{current_path}/config/nginx.conf /etc/nginx/sites-enabled/#{application}"
-    sudo "ln -nfs #{current_path}/config/unicorn_init.sh /etc/init.d/unicorn_#{application}"
-    sudo "mkdir -p #{shared_path}/config"
+ 
+  task :restart, :roles => [:web, :app] do
+    deploy.stop
+    deploy.start
   end
-  after "deploy:setup", "deploy:setup_config"
-
-
-  task :symlink_config, roles: :app do
-    # Add database config here
-  end
-  after "deploy:finalize_update", "deploy:fix_permissions"
-  after "deploy:finalize_update", "deploy:symlink_config"
-
-  desc "Override deploy:cold to NOT run migrations - there's no database"
+ 
+  # This will make sure that Capistrano doesn't try to run rake:migrate (this is not a Rails project!)
   task :cold do
-    update
-    start
+    deploy.update
+    deploy.start
   end
 end
