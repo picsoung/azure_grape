@@ -25,11 +25,11 @@ ssh_options[:keys] = ["/Users/picsoung/Documents/Dev/3scale/add-on/azure/myPriva
 
 namespace :deploy do
   task :start, :roles => [:web, :app] do
-    run "cd #{deploy_to}/current && nohup thin -C config/production_config.yml -R config.ru start"
+    run "cd #{deploy_to}/current && nohup bundle exec thin start -C config/production_config.yml -R config.ru"
   end
  
   task :stop, :roles => [:web, :app] do
-    run "cd #{deploy_to}/current && nohup thin -C config/production_config.yml -R config.ru stop"
+    run "cd #{deploy_to}/current && nohup bundle exec thin stop -C config/production_config.yml -R config.ru"
   end
  
   task :restart, :roles => [:web, :app] do
