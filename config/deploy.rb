@@ -2,7 +2,9 @@ require "bundler/capistrano"
 
 
 set :application, "grape"
-set :user, "azureuser"
+set :user, "deployer"
+set :group, "staff"
+
 
 set :scm, :git
 set :repository, "git@github.com:picsoung/azure_grape.git"
@@ -20,31 +22,28 @@ ssh_options[:port] = 22
 
 
 namespace :deploy do
-  desc "Fix permissions"
-  task :fix_permissions, :roles => [ :app, :db, :web ] do
-    run "chmod +x #{release_path}/config/unicorn_init.sh"
-  end
+    desc "Custom AceMoney deployment: stop."
+    task :stop, :roles => :app do
 
-
-  %w[start stop restart].each do |command|
-    desc "#{command} unicorn server"
-    task command, roles: :app, except: {no_release: true} do
-      run "service unicorn_#{application} #{command}"
+        invoke_command "cd #{current_path};./script/ferret_server -e production stop"
+        invoke_command "service thin stop"
     end
-  end
 
+    desc "Custom AceMoney deployment: start."
+    task :start, :roles => :app do
 
-  task :setup_config, roles: :app do
-    sudo "ln -nfs #{current_path}/config/nginx.conf /etc/nginx/sites-enabled/#{application}"
-    sudo "ln -nfs #{current_path}/config/unicorn_init.sh /etc/init.d/unicorn_#{application}"
-    sudo "mkdir -p #{shared_path}/config"
-  end
-  after "deploy:setup", "deploy:setup_config"
+        invoke_command "cd #{current_path};./script/ferret_server -e production start"
+        invoke_command "service thin start"
+    end
 
+    # Need to define this restart ALSO as 'cap deploy' uses it
+    # (Gautam) I dont know how to call tasks within tasks.
+    desc "Custom AceMoney deployment: restart."
+    task :restart, :roles => :app do
 
-  task :symlink_config, roles: :app do
-    # Add database config here
-  end
-  after "deploy:finalize_update", "deploy:fix_permissions"
-  after "deploy:finalize_update", "deploy:symlink_config"
+        invoke_command "cd #{current_path};./script/ferret_server -e production stop"
+        invoke_command "service thin stop"
+        invoke_command "cd #{current_path};./script/ferret_server -e production start"
+        invoke_command "service thin start"
+    end
 end
