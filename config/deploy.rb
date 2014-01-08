@@ -2,14 +2,14 @@ require "bundler/capistrano"
 
 
 set :application, "grapeapi"
-set :user,"deployer"
-set :group, "staff"
+set :user,"azureuser"
+#set :group, "staff"
 
 
 set :scm, :git
 set :repository, "git@github.com:picsoung/azure_grape.git"
 set :branch, "master"
-set :use_sudo, true
+set :use_sudo, false
 
 
 server "ruby3scale.cloudapp.net", :web, :app, :db, primary: true
@@ -17,8 +17,10 @@ server "ruby3scale.cloudapp.net", :web, :app, :db, primary: true
 
 set :deploy_to, "/home/#{user}/apps/#{application}"
 default_run_options[:pty] = true
-ssh_options[:forward_agent] = true
+
+ssh_options[:forward_agent] = false
 ssh_options[:port] = 22
+ssh_options[:keys] = ["/Users/picsoung/Documents/Dev/3scale/add-on/azure/myPrivateKey.key"]
 
 
 namespace :deploy do
