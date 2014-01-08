@@ -1,4 +1,3 @@
-default_run_options[:shell] = false
 load 'deploy'
 # Uncomment if you are using Rails' asset pipeline
     # load 'deploy/assets'

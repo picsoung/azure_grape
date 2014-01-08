@@ -85,7 +85,6 @@ PLATFORMS
 DEPENDENCIES
   3scale_client
   capistrano
-  eventmachine (~> 1.0.3)
   grape
   json
   nokogiri
