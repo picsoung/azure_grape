@@ -1,8 +1,8 @@
 worker_processes 2
 timeout 30
 listen "/tmp/unicorn.blog.sock"
- 
-root = "/home/azureuser/apps/grapeapi/current"
+user 'deployer', 'staff'
+root = "/home/deployer/apps/grapeapi/current"
  
 working_directory root
  

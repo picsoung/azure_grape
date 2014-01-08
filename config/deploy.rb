@@ -2,7 +2,8 @@ require "bundler/capistrano"
 
 
 set :application, "grapeapi"
-set :user, "azureuser"
+set :user,"deployer"
+set :group, "staff"
 
 
 set :scm, :git
@@ -17,7 +18,7 @@ server "ruby3scale.cloudapp.net", :web, :app, :db, primary: true
 set :deploy_to, "/home/#{user}/apps/#{application}"
 default_run_options[:pty] = true
 ssh_options[:forward_agent] = true
-ssh_options[:port] = SSHPort
+ssh_options[:port] = 22
 
 
 namespace :deploy do
