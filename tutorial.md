@@ -123,7 +123,7 @@ set :application, "YOURAPPLICATIONNAME"
 set :user,"USERNAME"
 
 set :scm, :git
-set :repository, "git@github.com:username/repo.git"
+set :repository, "git@github.com:GITHUBUSERNAME/REPO.git"
 set :branch, "master"
 set :use_sudo, false
 
@@ -164,6 +164,12 @@ namespace :deploy do
 end
  
 ```
+In above text, replace the following:
+`VNDNSname` to your .cloudapp.net DNS
+`YOURAPPLICATIONNAME` to your applicationame
+`USERNAME` to the username used to login into the VM
+`GITHUBUSERNAME` to your Github username
+`REPO` to your Github repo name
 
 We also need to add a file `production_config.yml` in `/config` to configure the thin server
 
@@ -181,6 +187,7 @@ timeout: 30
 max_persistent_conns: 512
 daemonize: true
 ```
+Again, change usernames and paths accordingly.
 
 Commit the changes on the project and upload them on Github
 
@@ -191,3 +198,30 @@ git push
 ```
 
 ## Deploy
+
+For your local development machine, run the following command to setup the remote Azure VM:
+
+```sh
+cap deploy:setup
+```
+You should not be prompted for password if the path to your ssh key is correct.
+Capistrano will connect to your VM and create an `apps` directory under the `home` directory of the user account.
+
+Now, you can deploy your API to the VM and launch thin server using the command:
+
+``` cap deploy:cold ```
+
+In your VM, restart nginx. 
+```
+sudo service nginx stop
+sudo service nginx start
+```
+
+Your API should now be available on the url MYAPI.cloudapp.net/path/to/ressources
+In the case you deploy the Sentiment API V2. MYAPI.cloudapp.net/v2/words/hello.json
+
+You now have an API running on an Azure Linux instance.
+Hope you enjoyed this tutorial.
+
+Please let us know if you have any remarks or questions about it.
+
